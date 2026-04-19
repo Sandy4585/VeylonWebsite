@@ -21,7 +21,7 @@ function escapeHtml(s: string): string {
     .replace(/"/g, "&quot;");
 }
 
-/** Subject: "New Veylon inquiry — [Department] from [Name]" */
+/** Subject: "New Veylon inquiry — [Department] from [Name]" (department defaults to "General inquiry" when omitted) */
 export function contactInquiryTemplate(input: ContactInquiryTemplateInput): {
   subject: string;
   html: string;
@@ -69,40 +69,45 @@ export function contactInquiryTemplate(input: ContactInquiryTemplateInput): {
   }
 
   const d = input.data;
-  const department = d.department;
-  const subject = `New Veylon inquiry — ${department} from ${d.name}`;
+  const departmentChosen = d.department?.trim();
+  const subjectDepartment = departmentChosen || "General inquiry";
+  const subject = `New Veylon inquiry — ${subjectDepartment} from ${d.name}`;
 
-  const phone = d.phone?.trim() || "—";
-  const company = d.company?.trim() || "—";
+  const phoneLine = d.phone?.trim();
 
-  const textLines = [
+  const textLines: string[] = [
     "Contact form inquiry",
     "",
     `Name: ${d.name}`,
     `Email: ${d.email}`,
-    `Phone: ${phone}`,
-    `Department: ${department}`,
-    `Company: ${company}`,
-    `Consent to contact: Yes`,
-    "",
-    "Message:",
-    d.message,
-    "",
-    `Submitted (IST): ${submittedAt}`,
   ];
+  if (phoneLine) {
+    textLines.push(`Phone: ${phoneLine}`);
+  }
+  if (departmentChosen) {
+    textLines.push(`Department: ${departmentChosen}`);
+  }
+  textLines.push(`Consent to contact: Yes`, "", "Message:", d.message, "", `Submitted (IST): ${submittedAt}`);
 
-  const htmlBody = `
-<p><strong>Name:</strong> ${escapeHtml(d.name)}</p>
-<p><strong>Email:</strong> ${escapeHtml(d.email)}</p>
-<p><strong>Phone:</strong> ${escapeHtml(phone)}</p>
-<p><strong>Department:</strong> ${escapeHtml(department)}</p>
-<p><strong>Company:</strong> ${escapeHtml(company)}</p>
-<p><strong>Consent to contact:</strong> Yes</p>
-<hr style="border:none;border-top:1px solid #ccc;margin:1rem 0" />
-<p><strong>Message</strong></p>
-<pre style="white-space:pre-wrap;font-family:inherit;margin:0">${escapeHtml(d.message)}</pre>
-<p style="margin-top:1.5rem;color:#444;font-size:0.9em"><strong>Submitted (IST):</strong> ${escapeHtml(submittedAt)}</p>
-`.trim();
+  const htmlParts: string[] = [
+    `<p><strong>Name:</strong> ${escapeHtml(d.name)}</p>`,
+    `<p><strong>Email:</strong> ${escapeHtml(d.email)}</p>`,
+  ];
+  if (phoneLine) {
+    htmlParts.push(`<p><strong>Phone:</strong> ${escapeHtml(phoneLine)}</p>`);
+  }
+  if (departmentChosen) {
+    htmlParts.push(`<p><strong>Department:</strong> ${escapeHtml(departmentChosen)}</p>`);
+  }
+  htmlParts.push(
+    `<p><strong>Consent to contact:</strong> Yes</p>`,
+    `<hr style="border:none;border-top:1px solid #ccc;margin:1rem 0" />`,
+    `<p><strong>Message</strong></p>`,
+    `<pre style="white-space:pre-wrap;font-family:inherit;margin:0">${escapeHtml(d.message)}</pre>`,
+    `<p style="margin-top:1.5rem;color:#444;font-size:0.9em"><strong>Submitted (IST):</strong> ${escapeHtml(submittedAt)}</p>`,
+  );
+
+  const htmlBody = htmlParts.join("\n");
 
   return {
     subject,

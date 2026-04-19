@@ -20,6 +20,7 @@ import { Container } from "@/components/veylon/container";
 import { Section } from "@/components/veylon/section";
 import { Eyebrow, Headline } from "@/components/veylon/typography";
 import {
+  type ContactFormInput,
   contactFormSchema,
   type ContactFormValues,
 } from "@/lib/contact/contact-form-schema";
@@ -32,40 +33,40 @@ const selectClassName = cn(
   "aria-invalid:border-destructive aria-invalid:ring-destructive/20",
 );
 
+const requiredMark = (
+  <span className="text-destructive" aria-hidden>
+    {" "}
+    *
+  </span>
+);
+
 export type ContactFormProps = {
   departmentOptions: string[];
-  requireCompanyField: boolean;
 };
 
-export function ContactForm({
-  departmentOptions,
-  requireCompanyField,
-}: ContactFormProps) {
+export function ContactForm({ departmentOptions }: ContactFormProps) {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
-  const firstDept = departmentOptions[0] ?? "";
+  const showDepartment = departmentOptions.length > 0;
 
-  const form = useForm<ContactFormValues>({
+  const form = useForm<ContactFormInput, unknown, ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
     defaultValues: {
       name: "",
       email: "",
       phone: "",
-      department: firstDept,
-      company: "",
+      department: undefined,
       message: "",
       consent: false,
-      requireCompanyField,
     },
   });
 
   async function onSubmit(values: ContactFormValues) {
     setSubmitError(null);
-    const payload = {
+    const payload: ContactFormValues = {
       ...values,
       phone: values.phone?.trim() || undefined,
-      company: values.company?.trim() || undefined,
-      requireCompanyField,
+      department: values.department?.trim() || undefined,
     };
 
     const res = await fetch("/api/contact", {
@@ -142,7 +143,10 @@ export function ContactForm({
                     name="name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Name</FormLabel>
+                        <FormLabel>
+                          Name
+                          {requiredMark}
+                        </FormLabel>
                         <FormControl>
                           <Input autoComplete="name" {...field} />
                         </FormControl>
@@ -155,7 +159,10 @@ export function ContactForm({
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Email</FormLabel>
+                        <FormLabel>
+                          Email
+                          {requiredMark}
+                        </FormLabel>
                         <FormControl>
                           <Input type="email" autoComplete="email" {...field} />
                         </FormControl>
@@ -168,12 +175,12 @@ export function ContactForm({
                     name="phone"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Phone (optional)</FormLabel>
+                        <FormLabel>Phone</FormLabel>
                         <FormControl>
                           <Input
                             type="tel"
                             autoComplete="tel"
-                            placeholder="+91…"
+                            placeholder="(optional)"
                             {...field}
                           />
                         </FormControl>
@@ -181,34 +188,30 @@ export function ContactForm({
                       </FormItem>
                     )}
                   />
-                  <FormField
-                    control={form.control}
-                    name="department"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Department</FormLabel>
-                        <FormControl>
-                          <select {...field} className={selectClassName}>
-                            {departmentOptions.map((opt) => (
-                              <option key={opt} value={opt}>
-                                {opt}
-                              </option>
-                            ))}
-                          </select>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  {requireCompanyField ? (
+                  {showDepartment ? (
                     <FormField
                       control={form.control}
-                      name="company"
+                      name="department"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Company</FormLabel>
+                          <FormLabel>Department</FormLabel>
                           <FormControl>
-                            <Input autoComplete="organization" {...field} />
+                            <select
+                              {...field}
+                              value={field.value ?? ""}
+                              onChange={(e) => {
+                                const v = e.target.value;
+                                field.onChange(v === "" ? undefined : v);
+                              }}
+                              className={selectClassName}
+                            >
+                              <option value="">— select topic (optional) —</option>
+                              {departmentOptions.map((opt) => (
+                                <option key={opt} value={opt}>
+                                  {opt}
+                                </option>
+                              ))}
+                            </select>
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -220,9 +223,16 @@ export function ContactForm({
                     name="message"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Message</FormLabel>
+                        <FormLabel>
+                          Message
+                          {requiredMark}
+                        </FormLabel>
                         <FormControl>
-                          <Textarea rows={6} {...field} />
+                          <Textarea
+                            rows={6}
+                            placeholder="What would you like to talk about? A few lines is fine."
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -244,6 +254,7 @@ export function ContactForm({
                         <div className="space-y-1 leading-none">
                           <FormLabel className="font-sans font-normal text-slate-700">
                             I agree to be contacted about my inquiry
+                            {requiredMark}
                           </FormLabel>
                           <FormMessage />
                         </div>

@@ -62,10 +62,7 @@ export default async function ContactPageRoute() {
     <>
       <ContactHero data={contactPage.hero} />
       <ContactChannels channels={channels} />
-      <ContactForm
-        departmentOptions={contactPage.formConfig.departmentOptions}
-        requireCompanyField={contactPage.formConfig.requireCompanyField}
-      />
+      <ContactForm departmentOptions={contactPage.formConfig.departmentOptions ?? []} />
       <ContactOffice
         officeAddress={contactPage.officeAddress}
         mapEmbedUrl={contactPage.mapEmbedUrl}
