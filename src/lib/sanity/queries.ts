@@ -19,11 +19,24 @@ export const aboutPageQuery = `*[_type == "aboutPage" && _id == "aboutPage"][0]{
   team[]->{...},
 }`;
 
-export const residentialHubQuery = `*[_type == "residentialHub" && _id == "residentialHub"][0]{ ... }`;
+export const residentialHubQuery = `*[_type == "residentialHub" && _id == "residentialHub"][0]{
+  ...,
+  componentPartners[]->,
+  featuredProjects[]->,
+  faqs[]->
+}`;
 
-export const commercialHubQuery = `*[_type == "commercialHub" && _id == "commercialHub"][0]{ ... }`;
+export const commercialHubQuery = `*[_type == "commercialHub" && _id == "commercialHub"][0]{
+  ...,
+  componentPartners[]->,
+  featuredProjects[]->,
+  faqs[]->
+}`;
 
-export const utilityScalePageQuery = `*[_type == "utilityScalePage" && _id == "utilityScalePage"][0]{ ... }`;
+export const utilityScalePageQuery = `*[_type == "utilityScalePage" && _id == "utilityScalePage"][0]{
+  ...,
+  credentials[]->
+}`;
 
 export const contactPageQuery = `*[_type == "contactPage" && _id == "contactPage"][0]{ ... }`;
 

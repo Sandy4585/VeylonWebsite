@@ -42,3 +42,44 @@ export const cta = defineType({
     }),
   ],
 });
+
+/** Same shape as `cta` but all fields optional — use for secondary CTAs where an empty block must validate. */
+export const optionalCta = defineType({
+  name: "optionalCta",
+  title: "Call to action (optional)",
+  type: "object",
+  icon: LinkIcon,
+  fields: [
+    defineField({
+      name: "label",
+      title: "Label",
+      type: "string",
+      validation: (Rule) => Rule.max(40),
+    }),
+    defineField({
+      name: "href",
+      title: "URL or path",
+      type: "string",
+    }),
+    defineField({
+      name: "variant",
+      title: "Variant",
+      type: "string",
+      options: {
+        list: [
+          { title: "Primary", value: "primary" },
+          { title: "Secondary", value: "secondary" },
+          { title: "Ghost", value: "ghost" },
+        ],
+        layout: "radio",
+      },
+      initialValue: "secondary",
+    }),
+    defineField({
+      name: "external",
+      title: "Open in new tab",
+      type: "boolean",
+      initialValue: false,
+    }),
+  ],
+});

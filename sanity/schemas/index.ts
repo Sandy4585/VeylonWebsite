@@ -6,7 +6,7 @@ import { resource } from "./documents/resource";
 import { teamMember } from "./documents/teamMember";
 import { testimonial } from "./documents/testimonial";
 import { trustSignal } from "./documents/trustSignal";
-import { cta } from "./objects/cta";
+import { cta, optionalCta } from "./objects/cta";
 import { legalEntity } from "./objects/legalEntity";
 import {
   pageBlockContent,
@@ -29,6 +29,7 @@ import { utilityScalePage } from "./singletons/utilityScalePage";
 
 export const schemaTypes = [
   cta,
+  optionalCta,
   richImage,
   statBlock,
   simpleBlockContent,

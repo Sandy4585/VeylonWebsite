@@ -2,19 +2,20 @@ import { Container } from "@/components/veylon/container";
 import { CtaButton } from "@/components/veylon/cta-button";
 import { Section } from "@/components/veylon/section";
 import { VeylonImage } from "@/components/veylon/veylon-image";
-import type { Cta, CtaRenderable, MarketingHero, OptionalCta } from "@/lib/sanity/types";
+import type { Cta, MarketingHero, OptionalCta } from "@/lib/sanity/types";
+import { optionalCtaToCta } from "@/lib/veylon/optional-cta";
 
-function isRenderableCta(cta: Cta | OptionalCta | undefined): cta is CtaRenderable {
+function isRenderableCta(cta: Cta | OptionalCta | undefined): boolean {
   return Boolean(cta?.label?.trim() && cta?.href);
 }
 
-export type HeroProps = {
+export type HubHeroProps = {
   data: MarketingHero;
   /** Set true when this hero image should be treated as LCP (first prominent image). */
   priority?: boolean;
 };
 
-export function Hero({ data, priority = false }: HeroProps) {
+export function HubHero({ data, priority = false }: HubHeroProps) {
   const hasBackground = Boolean(data.backgroundImage);
   const primary = data.primaryCta;
   const secondary = data.secondaryCta;
@@ -25,12 +26,12 @@ export function Hero({ data, priority = false }: HeroProps) {
     <Section
       tone="navy"
       spacing="none"
-      className="relative flex min-h-[85vh] flex-col justify-center overflow-hidden md:min-h-[90vh]"
+      className="relative flex min-h-[70vh] flex-col justify-center overflow-hidden md:min-h-[80vh]"
     >
       {hasBackground && data.backgroundImage ? (
         <>
           <div
-            className="pointer-events-none absolute inset-0 z-0 min-h-[85vh] md:min-h-[90vh]"
+            className="pointer-events-none absolute inset-0 z-0 min-h-[70vh] md:min-h-[80vh]"
             aria-hidden
           >
             <VeylonImage
@@ -40,10 +41,7 @@ export function Hero({ data, priority = false }: HeroProps) {
               className="absolute inset-0 m-0 h-full min-h-full w-full [&>div]:h-full [&>div]:min-h-full [&_img]:h-full [&_img]:min-h-full [&_img]:object-cover [&_figcaption]:hidden"
             />
           </div>
-          <div
-            className="absolute inset-0 z-[1] bg-gradient-to-b from-navy-900/80 to-transparent"
-            aria-hidden
-          />
+          <div className="absolute inset-0 z-[1] bg-navy-900/80" aria-hidden />
         </>
       ) : null}
 
@@ -52,7 +50,7 @@ export function Hero({ data, priority = false }: HeroProps) {
           {data.eyebrow ? (
             <p
               data-component="eyebrow"
-              className="max-w-3xl font-sans text-sm font-semibold tracking-[0.2em] text-amber-400 uppercase md:text-base"
+              className="max-w-3xl font-sans text-sm font-semibold tracking-[0.2em] text-amber-500 uppercase md:text-base"
             >
               {data.eyebrow}
             </p>
@@ -81,7 +79,11 @@ export function Hero({ data, priority = false }: HeroProps) {
                 <CtaButton cta={primary} size="lg" className="min-w-[12rem] shrink-0" />
               ) : null}
               {showSecondary && secondary ? (
-                <CtaButton cta={secondary} size="lg" className="shrink-0" />
+                <CtaButton
+                  cta={optionalCtaToCta(secondary)}
+                  size="lg"
+                  className="shrink-0"
+                />
               ) : null}
             </div>
           )}

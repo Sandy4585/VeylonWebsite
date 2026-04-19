@@ -1,11 +1,10 @@
 import { Container } from "@/components/veylon/container";
 import { CtaButton } from "@/components/veylon/cta-button";
 import { Section } from "@/components/veylon/section";
-import type { ClosingCtaBlock } from "@/lib/sanity/types";
+import type { ClosingCtaBlock, Cta, OptionalCta } from "@/lib/sanity/types";
+import { optionalCtaToCta } from "@/lib/veylon/optional-cta";
 
-function isRenderableCta(
-  cta: ClosingCtaBlock["primaryCta"] | ClosingCtaBlock["secondaryCta"],
-): cta is NonNullable<typeof cta> {
+function isRenderableCta(cta: Cta | OptionalCta | undefined): boolean {
   return Boolean(cta?.label?.trim() && cta?.href);
 }
 
@@ -16,8 +15,10 @@ export type ClosingCtaProps = {
 export function ClosingCta({ data }: ClosingCtaProps) {
   if (!data?.headline?.trim()) return null;
 
-  const showPrimary = isRenderableCta(data.primaryCta);
-  const showSecondary = isRenderableCta(data.secondaryCta);
+  const primary = data.primaryCta;
+  const secondary = data.secondaryCta;
+  const showPrimary = isRenderableCta(primary);
+  const showSecondary = isRenderableCta(secondary);
 
   return (
     <Section tone="navy" spacing="none" className="py-24 md:py-32">
@@ -31,11 +32,11 @@ export function ClosingCta({ data }: ClosingCtaProps) {
           ) : null}
           {(showPrimary || showSecondary) && (
             <div className="mt-12 flex flex-wrap items-center justify-center gap-4">
-              {showPrimary && data.primaryCta ? (
-                <CtaButton cta={data.primaryCta} size="lg" />
+              {showPrimary && primary ? (
+                <CtaButton cta={primary} size="lg" />
               ) : null}
-              {showSecondary && data.secondaryCta ? (
-                <CtaButton cta={data.secondaryCta} size="lg" />
+              {showSecondary && secondary ? (
+                <CtaButton cta={optionalCtaToCta(secondary)} size="lg" />
               ) : null}
             </div>
           )}

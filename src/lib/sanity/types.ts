@@ -62,6 +62,18 @@ export type Cta = {
   external?: boolean;
 };
 
+/** Secondary CTA in marketing hero / closing blocks — all fields optional in CMS; render only when label + href are set */
+export type OptionalCta = {
+  _type?: "optionalCta";
+  label?: string;
+  href?: string;
+  variant?: "primary" | "secondary" | "ghost";
+  external?: boolean;
+};
+
+/** After label + href checks — must be a subtype of `Cta | OptionalCta` for type-guard soundness */
+export type CtaRenderable = Cta | (OptionalCta & { label: string; href: string });
+
 export type Seo = {
   _type?: "seo";
   metaTitle?: string;
@@ -137,7 +149,7 @@ export type MarketingHero = {
   headline: string;
   subheadline?: string;
   primaryCta?: Cta;
-  secondaryCta?: Cta;
+  secondaryCta?: OptionalCta;
   backgroundImage?: RichImage;
 };
 
@@ -171,7 +183,7 @@ export type ClosingCtaBlock = {
   headline: string;
   subheadline?: string;
   primaryCta?: Cta;
-  secondaryCta?: Cta;
+  secondaryCta?: OptionalCta;
 };
 
 export type TrustSignalDoc = SanityDocumentBase & {
@@ -351,4 +363,84 @@ export type ContactPage = SanityDocumentBase & {
   officeAddress?: SimpleBlockContent;
   mapEmbedUrl?: string;
   formConfig: ContactFormConfig;
+};
+
+export type HubSegment = "residential" | "commercial";
+
+export type ValuePropItem = {
+  _type?: string;
+  title: string;
+  description: string;
+};
+
+export type HowItWorksStep = {
+  _type?: string;
+  step: number;
+  title: string;
+  description: string;
+};
+
+export type HubCalculatorEmbed = {
+  enabled?: boolean;
+  headline: string;
+  description?: string;
+};
+
+export type FaqCategory = "residential" | "commercial" | "utility" | "general";
+
+export type FaqDoc = SanityDocumentBase & {
+  _type: "faq";
+  question: string;
+  answer: PageBlockContent;
+  category: FaqCategory;
+  displayOrder: number;
+  featured?: boolean;
+};
+
+export type ResidentialHub = SanityDocumentBase & {
+  _type: "residentialHub";
+  seo?: Seo;
+  hero: MarketingHero;
+  valueProps?: ValuePropItem[];
+  howItWorks?: HowItWorksStep[];
+  calculatorEmbed?: HubCalculatorEmbed;
+  componentPartners?: TrustSignalDoc[];
+  featuredProjects?: ProjectDoc[];
+  faqs?: FaqDoc[];
+  closingCta?: ClosingCtaBlock;
+};
+
+export type CommercialHub = SanityDocumentBase & {
+  _type: "commercialHub";
+  seo?: Seo;
+  hero: MarketingHero;
+  valueProps?: ValuePropItem[];
+  howItWorks?: HowItWorksStep[];
+  calculatorEmbed?: HubCalculatorEmbed;
+  componentPartners?: TrustSignalDoc[];
+  featuredProjects?: ProjectDoc[];
+  faqs?: FaqDoc[];
+  closingCta?: ClosingCtaBlock;
+};
+
+export type UtilityCapability = {
+  _type?: string;
+  title: string;
+  description: string;
+};
+
+export type UtilityContactFormBlock = {
+  headline: string;
+  description?: string;
+  recipientRole: string;
+};
+
+export type UtilityScalePage = SanityDocumentBase & {
+  _type: "utilityScalePage";
+  seo?: Seo;
+  hero: MarketingHero;
+  capabilities?: UtilityCapability[];
+  credentials?: TrustSignalDoc[];
+  contactForm?: UtilityContactFormBlock;
+  closingCta?: ClosingCtaBlock;
 };

@@ -1,11 +1,11 @@
 import Link from "next/link";
 
-import type { Cta } from "@/lib/sanity/types";
+import type { CtaRenderable } from "@/lib/sanity/types";
 
 import { Button, type VeylonButtonProps } from "./button";
 
 export type CtaButtonProps = {
-  cta: Cta;
+  cta: CtaRenderable;
   className?: string;
   size?: VeylonButtonProps["size"];
 };
