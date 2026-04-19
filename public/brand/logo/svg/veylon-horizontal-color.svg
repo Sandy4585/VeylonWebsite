@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Veylon Energy — Horizontal Primary Logo (Color) -->
+<!-- Colors: Navy #0A2540, Amber #F5B700, Green accent #00A86B -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 120" width="420" height="120">
+  <title>Veylon Energy</title>
+  <desc>Veylon Energy horizontal primary logo — solar horizon mark with wordmark</desc>
+
+  <!-- MARK: Solar horizon, centered at (60, 60) -->
+  <g transform="translate(60, 60)">
+    <!-- Trajectory arc (dashed) above the sun -->
+    <path d="M -34 -4 A 34 34 0 0 1 34 -4"
+          stroke="#0A2540" stroke-width="1.2" fill="none"
+          stroke-dasharray="2.5 3" stroke-linecap="round"/>
+    <!-- Apex accent dot (green) -->
+    <circle cx="0" cy="-38" r="2.8" fill="#00A86B"/>
+    <!-- Half-sun (amber) rising above horizon -->
+    <path d="M -19 4 A 19 19 0 0 1 19 4 Z" fill="#F5B700"/>
+    <!-- Horizon line (navy) -->
+    <line x1="-38" y1="4" x2="38" y2="4"
+          stroke="#0A2540" stroke-width="2" stroke-linecap="round"/>
+  </g>
+
+  <!-- WORDMARK: VEYLON ENERGY, right of mark -->
+  <!-- VEYLON (primary) -->
+  <text x="120" y="62"
+        font-family="'Helvetica Neue', 'Arial', sans-serif"
+        font-size="34" font-weight="600" letter-spacing="6"
+        fill="#0A2540">VEYLON</text>
+  <!-- ENERGY (sub) -->
+  <text x="120" y="86"
+        font-family="'Helvetica Neue', 'Arial', sans-serif"
+        font-size="11" font-weight="400" letter-spacing="7"
+        fill="#6B7280">ENERGY</text>
+</svg>
