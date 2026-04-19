@@ -4,6 +4,11 @@ import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Inter } from "next/font/google";
 
+import { Footer } from "@/components/veylon/footer";
+import { Header } from "@/components/veylon/header";
+import { mergeSiteConfig } from "@/lib/sanity/fallbacks";
+import { getSiteConfig } from "@/lib/sanity/fetch-helpers";
+
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://veylon.energy";
 
 const inter = Inter({
@@ -35,16 +40,23 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const siteConfigRaw = await getSiteConfig();
+  const siteConfig = mergeSiteConfig(siteConfigRaw);
+
   return (
     <html lang="en">
       <body className={`${inter.variable} ${fraunces.variable}`}>
         <Analytics />
-        {children}
+        <div className="flex min-h-screen flex-col">
+          <Header siteConfig={siteConfig} />
+          <main className="flex-1 pt-16 md:pt-[72px]">{children}</main>
+          <Footer siteConfig={siteConfig} />
+        </div>
       </body>
     </html>
   );

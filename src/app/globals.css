@@ -117,9 +117,9 @@
   --color-slate-700: #374151;
   --color-slate-900: #0f172a; /* body text */
 
-  /* Typography — unchanged */
-  --font-sans: 'Inter', system-ui, sans-serif;
-  --font-serif: 'Fraunces', Georgia, serif;
+  /* Typography — Inter / Fraunces wired from next/font in layout */
+  --font-sans: var(--font-inter), 'Inter', system-ui, sans-serif;
+  --font-serif: var(--font-fraunces), 'Fraunces', Georgia, serif;
 
   /* Layout — unchanged */
   --container-max: 1200px;

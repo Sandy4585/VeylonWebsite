@@ -1,4 +1,4 @@
-/** GROQ query strings — fetch helpers come in a later phase. */
+/** GROQ query strings — consumed by `src/lib/sanity/fetch-helpers.ts`. */
 
 export const siteConfigQuery = `*[_type == "siteConfig" && _id == "siteConfig"][0]{
   ...,
