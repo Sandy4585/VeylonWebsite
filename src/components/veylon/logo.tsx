@@ -10,12 +10,15 @@ export type LogoProps = {
   href?: string | null;
 };
 
-/** Intrinsic SVG viewBoxes are ignored for layout; sizing is CSS-only. */
-const variantImgClass: Record<NonNullable<LogoProps["variant"]>, string> = {
-  /** ~140px wide at 420×120 aspect; max-w caps edge cases above 200px without SVG edits. */
-  horizontal: "h-20 w-auto max-w-[250px] object-contain object-left",
+/** Intrinsic SVG dimensions are ignored for layout; sizing is CSS-only. */
+const variantImgClass: Record<
+  NonNullable<LogoProps["variant"]>,
+  string
+> = {
+  /** ~140px wide at 420×120 aspect; max-w caps width on desktop. */
+  horizontal: "h-10 w-auto max-w-[200px] object-contain object-left",
   stacked: "h-20 w-auto object-contain object-left",
-  icon: "h-20 w-20 object-contain",
+  icon: "h-10 w-10 object-contain",
 };
 
 export function Logo({
