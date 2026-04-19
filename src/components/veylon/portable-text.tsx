@@ -1,9 +1,13 @@
-import { PortableText, type PortableTextComponents } from "@portabletext/react";
+import {
+  PortableText as SanityPortableText,
+  type PortableTextComponents,
+} from "@portabletext/react";
 import Link from "next/link";
 
 import type {
   PageBlockContent,
   ResourceBlockContent,
+  SimpleBlockContent,
 } from "@/lib/sanity/types";
 
 import { Headline, Prose } from "./typography";
@@ -170,7 +174,7 @@ function buildComponents(
           <aside
             className={`my-8 rounded-md border p-4 ${toneClass}`}
           >
-            <PortableText
+            <SanityPortableText
               value={value.body ?? []}
               components={simpleBodyComponents}
             />
@@ -263,10 +267,34 @@ export function BlockPortableText({
 
   return (
     <Prose className={className}>
-      <PortableText value={value} components={components} />
+      <SanityPortableText value={value} components={components} />
     </Prose>
   );
 }
+
+export type SimplePortableTextProps = {
+  value: SimpleBlockContent;
+  className?: string;
+};
+
+/** Renders Sanity `simpleBlockContent`. */
+export function SimplePortableText({
+  value,
+  className,
+}: SimplePortableTextProps) {
+  if (!value?.length) {
+    return null;
+  }
+
+  return (
+    <Prose className={className}>
+      <SanityPortableText value={value} components={simpleBodyComponents} />
+    </Prose>
+  );
+}
+
+/** Renders Sanity `pageBlockContent` / `resourceBlockContent`. */
+export { BlockPortableText as PortableText };
 
 /** Alias for `BlockPortableText` — renders Sanity `pageBlockContent` / `resourceBlockContent`. */
 export { BlockPortableText as PortableTextRenderer };

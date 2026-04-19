@@ -141,6 +141,16 @@ export type MarketingHero = {
   backgroundImage?: RichImage;
 };
 
+/** Orienting hero (about, contact): eyebrow, headline, optional subhead & background — no CTAs */
+export type AboutHero = {
+  eyebrow?: string;
+  headline: string;
+  subheadline?: string;
+  backgroundImage?: RichImage;
+};
+
+export type ContactHero = AboutHero;
+
 export type SegmentCard = {
   _type?: "segmentCard";
   segment: "residential" | "commercial" | "utility";
@@ -280,3 +290,65 @@ export type ResourceBlockContent = Array<
   | PteYoutubeBlock
   | PteTableBlock
 >;
+
+export type MissionPrinciple = {
+  _type?: "missionPrinciple";
+  title: string;
+  description: string;
+};
+
+export type MilestoneItem = {
+  _type?: "milestone";
+  year: number;
+  headline: string;
+  description: string;
+};
+
+export type TeamMemberDoc = SanityDocumentBase & {
+  _type: "teamMember";
+  name: string;
+  slug: SanitySlug;
+  role: string;
+  bio?: PageBlockContent;
+  photo: RichImage;
+  credentials?: string[];
+  linkedInUrl?: string;
+  displayOrder?: number;
+};
+
+export type AboutPage = SanityDocumentBase & {
+  _type: "aboutPage";
+  seo?: Seo;
+  hero: AboutHero;
+  founderStory: PageBlockContent;
+  companyStatement: PageBlockContent;
+  missionPrinciples?: MissionPrinciple[];
+  team?: TeamMemberDoc[];
+  milestones?: MilestoneItem[];
+  closingCta?: ClosingCtaBlock;
+};
+
+export type ContactChannelType = "whatsapp" | "email" | "phone" | "office";
+
+export type ContactChannel = {
+  _type?: "contactChannel";
+  type: ContactChannelType;
+  label: string;
+  value: string;
+  hours?: string;
+};
+
+export type ContactFormConfig = {
+  departmentOptions: string[];
+  requireCompanyField: boolean;
+};
+
+export type ContactPage = SanityDocumentBase & {
+  _type: "contactPage";
+  seo?: Seo;
+  hero: ContactHero;
+  channels?: ContactChannel[];
+  officeAddress?: SimpleBlockContent;
+  mapEmbedUrl?: string;
+  formConfig: ContactFormConfig;
+};

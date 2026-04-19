@@ -1,7 +1,7 @@
 import { EnvelopeIcon } from "@sanity/icons";
 import { defineArrayMember, defineField, defineType } from "sanity";
 
-import { marketingHeroField } from "../lib/heroFields";
+import { simpleHeroField } from "../lib/heroFields";
 
 export const contactPage = defineType({
   name: "contactPage",
@@ -14,7 +14,7 @@ export const contactPage = defineType({
       title: "SEO",
       type: "seo",
     }),
-    marketingHeroField(),
+    simpleHeroField(),
     defineField({
       name: "channels",
       title: "Channels",
