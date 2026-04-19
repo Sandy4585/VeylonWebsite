@@ -161,8 +161,8 @@ export function SiteHeaderClient({
   return (
     <HeaderFrame>
       <Container>
-        <div className="flex h-16 items-center justify-between gap-4 md:h-[72px]">
-          <div className="flex shrink-0 items-center">
+        <div className="flex min-h-20 items-center justify-between gap-4 py-2 md:min-h-24 md:py-2.5 lg:min-h-28 lg:py-3">
+          <div className="flex min-w-0 shrink-0 items-center">
             <Logo priority />
           </div>
           <DesktopNav items={primaryNav} />

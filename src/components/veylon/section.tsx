@@ -18,7 +18,8 @@ const spacingClass: Record<NonNullable<SectionProps["spacing"]>, string> = {
 
 const toneClass: Record<NonNullable<SectionProps["tone"]>, string> = {
   default: "",
-  navy: "bg-navy-900 text-slate-50 [&_a]:text-amber-400 [&_a:hover]:text-amber-300 [&_strong]:text-slate-50 [&_[data-component=eyebrow]]:text-amber-400 [&_[data-component=headline]]:text-slate-50 [&_[data-component=subheadline]]:text-slate-200",
+  navy:
+    "bg-navy-900 text-slate-50 [&_a:not([data-slot=veylon-button])]:text-amber-400 [&_a:not([data-slot=veylon-button]):hover]:text-amber-300 [&_strong]:text-slate-50 [&_[data-component=eyebrow]]:text-amber-400 [&_[data-component=headline]]:text-slate-50 [&_[data-component=subheadline]]:text-slate-200",
   slate: "bg-slate-100 text-slate-900",
   "amber-tint": "bg-amber-50 text-slate-900",
 };

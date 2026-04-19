@@ -15,10 +15,11 @@ const variantImgClass: Record<
   NonNullable<LogoProps["variant"]>,
   string
 > = {
-  /** ~140px wide at 420×120 aspect; max-w caps width on desktop. */
-  horizontal: "h-10 w-auto max-w-[200px] object-contain object-left",
-  stacked: "h-20 w-auto object-contain object-left",
-  icon: "h-10 w-10 object-contain",
+  /** Wordmark height and max-width caps (~⅔ of previous “double” scale). */
+  horizontal:
+    "h-16 w-auto max-w-[min(100%,480px)] object-contain object-left md:h-[75px] md:max-w-[532px] lg:h-20 lg:max-w-[588px]",
+  stacked: "h-[107px] w-auto object-contain object-left",
+  icon: "h-16 w-16 object-contain md:h-[75px] md:w-[75px]",
 };
 
 export function Logo({

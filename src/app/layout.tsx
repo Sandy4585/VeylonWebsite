@@ -54,7 +54,7 @@ export default async function RootLayout({
         <Analytics />
         <div className="flex min-h-screen flex-col">
           <Header siteConfig={siteConfig} />
-          <main className="flex-1 pt-16 md:pt-[72px]">{children}</main>
+          <main className="flex-1 pt-20 md:pt-[5.67rem] lg:pt-24">{children}</main>
           <Footer siteConfig={siteConfig} />
         </div>
       </body>

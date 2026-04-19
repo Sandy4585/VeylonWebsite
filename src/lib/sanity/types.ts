@@ -182,12 +182,19 @@ export type ProjectLocation = {
   state: string;
 };
 
+export type ProjectSystemDetails = {
+  capacityKw?: number;
+  configuration?: string;
+  commissionedDate?: string;
+};
+
 export type ProjectDoc = SanityDocumentBase & {
   _type: "project";
   title: string;
   slug: SanitySlug;
   segment: "residential" | "commercial" | "utility";
   location?: ProjectLocation;
+  systemDetails?: ProjectSystemDetails;
   heroImage?: RichImage;
   seo?: Seo;
 };
