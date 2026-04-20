@@ -40,33 +40,164 @@ export const utilityScalePageQuery = `*[_type == "utilityScalePage" && _id == "u
 
 export const contactPageQuery = `*[_type == "contactPage" && _id == "contactPage"][0]{ ... }`;
 
-export const projectBySlugQuery = `*[_type == "project" && slug.current == $slug][0]{
-  ...,
+const projectCardFields = `
+  _id,
+  _type,
+  _createdAt,
+  _updatedAt,
+  title,
+  slug,
+  segment,
+  location,
+  systemDetails,
   heroImage,
-  gallery[],
-  testimonial->{...},
+  publishedAt,
+  seo
+`;
+
+const resourceCardFields = `
+  _id,
+  _type,
+  _createdAt,
+  _updatedAt,
+  title,
+  slug,
+  type,
+  excerpt,
+  heroImage,
+  publishedAt,
+  seo
+`;
+
+export const projectBySlugQuery = `*[
+  _type == "project" &&
+  slug.current == $slug &&
+  defined(publishedAt) &&
+  publishedAt <= now()
+][0]{
+  _id,
+  _type,
+  _createdAt,
+  _updatedAt,
+  title,
+  slug,
+  segment,
+  location,
+  systemDetails,
+  results,
+  heroImage,
+  gallery,
+  narrative,
+  testimonial->{
+    _id,
+    _type,
+    _createdAt,
+    _updatedAt,
+    quote,
+    author,
+    photo,
+    rating,
+    publishedAt
+  },
+  publishedAt,
   seo
 }`;
 
-export const projectListQuery = `*[_type == "project" && ($segment == null || segment == $segment)] | order(publishedAt desc) {
-  ...,
+export const projectListQuery = `*[
+  _type == "project" &&
+  defined(slug.current) &&
+  defined(publishedAt) &&
+  publishedAt <= now() &&
+  ($segment == null || segment == $segment)
+] | order(publishedAt desc) {
+  ${projectCardFields}
+}`;
+
+export const projectRelatedQuery = `*[
+  _type == "project" &&
+  defined(slug.current) &&
+  defined(publishedAt) &&
+  publishedAt <= now() &&
+  segment == $segment &&
+  _id != $projectId
+] | order(publishedAt desc)[0...3] {
+  ${projectCardFields}
+}`;
+
+export const projectSlugsQuery = `*[
+  _type == "project" &&
+  defined(slug.current) &&
+  defined(publishedAt) &&
+  publishedAt <= now()
+][].slug.current`;
+
+export const resourceBySlugQuery = `*[
+  _type == "resource" &&
+  slug.current == $slug &&
+  defined(publishedAt) &&
+  publishedAt <= now()
+][0]{
+  _id,
+  _type,
+  _createdAt,
+  _updatedAt,
+  title,
+  slug,
+  type,
+  excerpt,
   heroImage,
+  body,
+  author->{
+    _id,
+    _type,
+    name,
+    role,
+    photo,
+    bio,
+    "bioPlainText": pt::text(bio)
+  },
+  publishedAt,
+  updatedAt,
+  relatedResources[]->{
+    ${resourceCardFields}
+  },
+  downloadableAsset{
+    pageCount,
+    file{
+      asset->{
+        url
+      }
+    }
+  },
   seo
 }`;
 
-export const resourceBySlugQuery = `*[_type == "resource" && slug.current == $slug][0]{
-  ...,
-  author->{...},
-  relatedResources[]->{...},
-  seo
+export const resourceListQuery = `*[
+  _type == "resource" &&
+  defined(slug.current) &&
+  defined(publishedAt) &&
+  publishedAt <= now() &&
+  ($type == null || type == $type)
+] | order(publishedAt desc) {
+  ${resourceCardFields}
 }`;
 
-export const resourceListQuery = `*[_type == "resource" && ($type == null || type == $type)] | order(publishedAt desc) {
-  ...,
-  heroImage,
-  author->{ name, slug },
-  seo
+export const resourceRelatedQuery = `*[
+  _type == "resource" &&
+  defined(slug.current) &&
+  defined(publishedAt) &&
+  publishedAt <= now() &&
+  _id != $resourceId
+] | order(publishedAt desc)[0...3] {
+  ${resourceCardFields}
 }`;
+
+export const resourceSlugsQuery = `*[
+  _type == "resource" &&
+  defined(slug.current) &&
+  defined(publishedAt) &&
+  publishedAt <= now()
+][].slug.current`;
 
 export const cityPageBySlugQuery = `*[_type == "cityPage" && slug.current == $slug][0]{
   ...,

@@ -207,17 +207,46 @@ export type ProjectLocation = {
 export type ProjectSystemDetails = {
   capacityKw?: number;
   configuration?: string;
+  components?: ProjectComponent[];
   commissionedDate?: string;
 };
+
+export type ProjectComponentRole =
+  | "module"
+  | "inverter"
+  | "battery"
+  | "monitoring"
+  | "mounting";
+
+export type ProjectComponent = {
+  _key?: string;
+  role: ProjectComponentRole;
+  brand: string;
+  model: string;
+};
+
+export type ProjectResults = {
+  annualGenerationKwh?: number;
+  co2OffsetTonnes?: number;
+  paybackYears?: number;
+  customerSavingsInr?: number;
+};
+
+export type ProjectSegment = "residential" | "commercial" | "utility";
 
 export type ProjectDoc = SanityDocumentBase & {
   _type: "project";
   title: string;
   slug: SanitySlug;
-  segment: "residential" | "commercial" | "utility";
+  segment: ProjectSegment;
   location?: ProjectLocation;
   systemDetails?: ProjectSystemDetails;
+  results?: ProjectResults;
   heroImage?: RichImage;
+  gallery?: RichImage[];
+  narrative?: PageBlockContent;
+  testimonial?: TestimonialDoc;
+  publishedAt?: string;
   seo?: Seo;
 };
 
@@ -241,10 +270,40 @@ export type ResourceDoc = SanityDocumentBase & {
   _type: "resource";
   title: string;
   slug: SanitySlug;
-  type: "guide" | "report" | "article" | "policy-update";
+  type: ResourceType;
   excerpt?: string;
   heroImage?: RichImage;
+  body?: ResourceBlockContent;
+  author?: ResourceAuthor;
+  publishedAt?: string;
+  updatedAt?: string;
+  relatedResources?: ResourceDoc[];
+  downloadableAsset?: ResourceDownloadableAsset;
   seo?: Seo;
+};
+
+export type ResourceType = "guide" | "report" | "article" | "policy-update";
+
+export type ResourceDownloadableAsset = {
+  file?: {
+    _type?: "file";
+    asset?: {
+      _ref?: string;
+      _type?: "reference";
+      url?: string;
+    };
+  };
+  pageCount?: number;
+};
+
+export type ResourceAuthor = {
+  _id: string;
+  _type: "teamMember";
+  name: string;
+  role: string;
+  photo?: RichImage;
+  bio?: PageBlockContent;
+  bioPlainText?: string;
 };
 
 export type HomePage = SanityDocumentBase & {
