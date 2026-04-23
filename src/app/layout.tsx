@@ -33,6 +33,20 @@ export const metadata: Metadata = {
     template: "%s | Veylon Energy",
   },
   description: "",
+  icons: {
+    icon: [
+      {
+        url: "/brand/logo/svg/veylon-icon-color.svg",
+        type: "image/svg+xml",
+      },
+      {
+        url: "/brand/logo/svg/veylon-icon-white.svg",
+        type: "image/svg+xml",
+        media: "(prefers-color-scheme: dark)",
+      },
+    ],
+    apple: "/brand/logo/svg/veylon-icon-color.svg",
+  },
 };
 
 export const viewport: Viewport = {
