@@ -1,6 +1,7 @@
 import { existsSync } from "node:fs";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
+
 import pngToIco from "png-to-ico";
 import sharp from "sharp";
 

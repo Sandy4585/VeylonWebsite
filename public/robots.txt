@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://veylonenergy.com
+Host: http://localhost:3000
 
 # Sitemaps
-Sitemap: https://veylonenergy.com/sitemap.xml
+Sitemap: http://localhost:3000/sitemap.xml
