@@ -33,10 +33,21 @@ export async function sanityFetch<T>({
       });
     }
 
+    // Dev: always hit Sanity so Studio publishes show up immediately.
+    // Prod: tag cache + 60s fallback until /api/revalidate webhook is configured.
+    if (process.env.NODE_ENV === "development") {
+      return await sanityClient.fetch<T>(query, params, {
+        perspective: "published",
+        cache: "no-store",
+      });
+    }
+
     return await sanityClient.fetch<T>(query, params, {
       perspective: "published",
+      // Avoid Sanity API CDN lag after publishes; Next.js Data Cache still applies.
+      useCdn: false,
       cache: "force-cache",
-      next: { tags, revalidate: false },
+      next: { tags, revalidate: 60 },
     });
   } catch (error) {
     console.error("[sanityFetch]", error);
